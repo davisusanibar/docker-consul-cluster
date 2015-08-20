@@ -1,6 +1,6 @@
 consul:
   image: progrium/consul
-  hostname: node2
+  hostname: node3
   ports:
   - "192.168.1.17:8300:8300"
   - "192.168.1.17:8301:8301"
@@ -8,14 +8,14 @@ consul:
   - "192.168.1.17:8302:8302"
   - "192.168.1.17:8302:8302/udp"
   - "192.168.1.17:8400:8400"
-  - "192.168.1.17:8001:8001"
+  - "8001:8500"
   - "172.17.42.1:53:53/udp"
   volumes:
-  - /mnt:/data
+    - ~/docker-consul/config:/etc/configs:ro
   command: -server -advertise 192.168.1.17 -join 192.168.1.15
 
 registrator:
-  command: consul://consul:8001
+  command: consul://192.168.1.17:8001
   privileged: true
   image: progrium/registrator
   links:
