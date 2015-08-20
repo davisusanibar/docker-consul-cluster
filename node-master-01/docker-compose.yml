@@ -8,21 +8,21 @@ consul:
   - "192.168.1.15:8302:8302"
   - "192.168.1.15:8302:8302/udp"
   - "192.168.1.15:8400:8400"
-  - "192.168.1.15:8001:8001"
+  - "8001:8500"
   - "172.17.42.1:53:53/udp"
   volumes:
-  - /mnt:/data
-  command: -server -advertise 192.168.1.15 -bootstrap-expect 2
-  
+    - ~/docker-consul/config:/etc/configs:ro
+  command: -server -advertise 192.168.1.15 -bootstrap-expect 3
+
 registrator:
-  command: consul://consul:8001
+  command: consul://192.168.1.15:8001
   privileged: true
   image: progrium/registrator
   links:
   - consul
   volumes:
   - /var/run/docker.sock:/tmp/docker.sock
-  
+
 nginx:
   build: ./
   environment:
